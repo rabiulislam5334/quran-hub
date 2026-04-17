@@ -1,65 +1,61 @@
-import Image from "next/image";
+import { fetchAllSurahs } from "@/services/quran.service";
+import Link from "next/link";
 
-export default function Home() {
+export default async function HomePage() {
+  // ডাটা ফেচ করা হচ্ছে
+  const surahs = await fetchAllSurahs();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="max-w-6xl mx-auto p-6 min-h-screen">
+      <div className="flex justify-between items-center mb-10">
+        <div>
+          <h1 className="text-4xl font-bold text-white">Al-Quran Digital</h1>
+          <p className="text-zinc-400 mt-2">Read and search the Holy Quran</p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </div>
+
+      {/* সূরার গ্রিড লিস্ট */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {surahs.map((surah) => (
+          <Link key={surah.id} href={`/surah/${surah.id}`}>
+            <div className="group p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl hover:border-emerald-500/50 hover:bg-zinc-800/50 transition-all duration-300 cursor-pointer relative overflow-hidden">
+              
+              {/* সূরার নাম্বার (Background Decor) */}
+              <span className="absolute -right-2 -bottom-2 text-6xl font-bold text-white/5 group-hover:text-emerald-500/10 transition-colors">
+                {surah.id}
+              </span>
+
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex items-center gap-3">
+                  <span className="flex items-center justify-center w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 font-mono font-bold border border-emerald-500/20">
+                    {surah.id}
+                  </span>
+                  <div>
+                    <h3 className="text-xl font-bold text-zinc-100 group-hover:text-emerald-400 transition-colors">
+                      {surah.transliteration}
+                    </h3>
+                    <p className="text-xs text-zinc-500 uppercase tracking-widest">
+                      {surah.translation}
+                    </p>
+                  </div>
+                </div>
+                <span className="text-2xl font-arabic text-emerald-500">
+                  {surah.name}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center mt-6 pt-4 border-t border-zinc-800/50">
+                <span className="text-sm text-zinc-400">
+                  {surah.total_verses} Verses
+                </span>
+                <span className="text-xs px-2 py-1 rounded bg-zinc-800 text-zinc-300">
+                  Read Surah →
+                </span>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </main>
   );
 }

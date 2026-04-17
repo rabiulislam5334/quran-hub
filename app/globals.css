@@ -24,3 +24,14 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+@layer base {
+  .arabic-text {
+    font-family: var(--arabic-font, 'Amiri'), serif;
+    font-size: var(--arabic-size, 28px);
+    direction: rtl;
+  }
+
+  .translation-text {
+    font-size: var(--trans-size, 18px);
+  }
+}

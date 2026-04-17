@@ -1,8 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Dispatch, SetStateAction } from "react";
+import { QuranSettings } from "@/types/quran.types";
 
 export function useQuranSettings() {
-  const [settings, setSettings] = useState({
+  // useState কে নির্দিষ্ট করে দিন যে এটি QuranSettings টাইপ গ্রহণ করবে
+  const [settings, setSettings] = useState<QuranSettings>({
     arabicFont: "Amiri",
     arabicSize: 28,
     translationSize: 18,
@@ -10,15 +12,30 @@ export function useQuranSettings() {
 
   useEffect(() => {
     const saved = localStorage.getItem("quranSettings");
-    if (saved) setSettings(JSON.parse(saved));
+    if (saved) {
+      try {
+        // টাইপ কাস্টিং এর মাধ্যমে setSettings কে আশ্বস্ত করা
+        const parsedData = JSON.parse(saved) as QuranSettings;
+        setSettings(parsedData); 
+      } catch (error) {
+        console.error("Settings parse error:", error);
+      }
+    }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("quranSettings", JSON.stringify(settings));
-    document.documentElement.style.setProperty("--arabic-font", settings.arabicFont);
-    document.documentElement.style.setProperty("--arabic-size", `${settings.arabicSize}px`);
-    document.documentElement.style.setProperty("--trans-size", `${settings.translationSize}px`);
+    
+    // CSS Variables আপডেট করা যাতে UI তে পরিবর্তন দেখা যায় [cite: 849, 850, 851]
+    const root = document.documentElement;
+    root.style.setProperty("--arabic-font", settings.arabicFont);
+    root.style.setProperty("--arabic-size", `${settings.arabicSize}px`);
+    root.style.setProperty("--trans-size", `${settings.translationSize}px`);
   }, [settings]);
 
-  return { settings, setSettings };
+  // রিটার্ন টাইপ স্পষ্ট করে দেওয়া
+  return { 
+    settings, 
+    setSettings: setSettings as Dispatch<SetStateAction<QuranSettings>> 
+  };
 }
