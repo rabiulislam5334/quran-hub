@@ -1,8 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri&family=Lateef&family=Scheherazade+New&display=swap');
 @import "tailwindcss";
+
+
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* ডিফল্ট ভেরিয়েবল যা সব মোডে কাজ করবে */
+  --arabic-font: 'Amiri';
+  --arabic-size: 28px;
+  --trans-size: 18px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* এই ক্লাসটি এখন সব জায়গায় কাজ করবে */
+.font-arabic {
+  font-family: var(--arabic-font);
+  font-size: var(--arabic-size);
 }
 
 @theme inline {
@@ -37,7 +57,4 @@ body {
   .translation-text {
     font-size: var(--trans-size, 18px);
   }
-}
-.font-arabic {
-  font-family: var(--arabic-font);
 }

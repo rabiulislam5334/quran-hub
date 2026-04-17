@@ -1,16 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { useQuranSettings } from "@/hooks/useQuranSettings";
-import { useLanguage } from "@/hooks/useLanguage";
+import { useQuran } from "@/context/QuranContext"; // আপনার তৈরি করা নতুন Context হুক
 import SettingsPanel from "@/components/quran/SettingsPanel";
 
 export default function SurahClient({ surah, surahNumber }: any) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const { settings } = useQuranSettings();
-  const { lang } = useLanguage();
+  // Context থেকে সবকিছু একবারে নিন
+  const { lang, settings, searchQuery, setSearchQuery } = useQuran();
 
-  // 🔍 Search filtering logic
+  // 🔍 Search filtering logic (এখন Context এর searchQuery ব্যবহার করবে)
   const filteredAyahs = surah?.ayahs?.filter((ayah: any) => {
     if (!searchQuery) return true;
 
@@ -25,12 +22,9 @@ export default function SurahClient({ surah, surahNumber }: any) {
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-black text-white">
       
-      {/* Sidebar - Sticky sidebar for settings */}
+      {/* Sidebar - SettingsPanel এখন Context থেকে ভ্যালু পাবে */}
       <aside className="w-full md:w-80 p-6 border-b md:border-r border-zinc-800 bg-zinc-950/50 backdrop-blur-md h-auto md:h-screen md:sticky md:top-0 overflow-y-auto scrollbar-none">
-        <SettingsPanel
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-        />
+        <SettingsPanel /> 
       </aside>
 
       {/* Main Content Area */}
@@ -58,18 +52,18 @@ export default function SurahClient({ surah, surahNumber }: any) {
             >
               {/* Ayah Meta */}
               <div className="flex items-center gap-4 mb-8">
-                <span className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-bold border border-emerald-500/20">
+                <span className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-bold border border-emerald-500/20 font-mono">
                   {ayah.numberInSurah}
                 </span>
                 <div className="h-[1px] flex-1 bg-zinc-800/50"></div>
               </div>
 
-              {/* Arabic Text */}
+              {/* Arabic Text (Inline Style ব্যবহার করা হয়েছে রিয়েল-টাইম ফন্ট সাইজের জন্য) */}
               <p
                 className="text-right leading-[2.5] mb-8 transition-all"
                 style={{
-                  fontFamily: "var(--arabic-font)",
-                  fontSize: "var(--arabic-size)",
+                  fontFamily: settings.arabicFont, // Context থেকে আসছে
+                  fontSize: `${settings.arabicSize}px`, // Context থেকে আসছে
                 }}
               >
                 {ayah.text}
@@ -77,26 +71,27 @@ export default function SurahClient({ surah, surahNumber }: any) {
 
               {/* Translations Container */}
               <div className="space-y-6 border-l-2 border-emerald-500/10 pl-6">
-                {/* Bengali */}
+                
+                {/* Bengali Translation */}
                 {(lang === "bn" || lang === "both") && ayah.bn && (
                   <div className="space-y-1">
                     <span className="text-[10px] font-bold text-emerald-500/50 uppercase tracking-tighter">Bengali</span>
                     <p 
                       className="text-emerald-50/90 leading-relaxed font-medium"
-                      style={{ fontSize: "var(--trans-size)" }}
+                      style={{ fontSize: `${settings.translationSize}px` }} // Context থেকে আসছে
                     >
                       {ayah.bn}
                     </p>
                   </div>
                 )}
 
-                {/* English */}
+                {/* English Translation */}
                 {(lang === "en" || lang === "both") && ayah.en && (
                   <div className="space-y-1">
                     <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-tighter">English</span>
                     <p 
                       className="text-zinc-400 italic leading-relaxed"
-                      style={{ fontSize: "calc(var(--trans-size) - 2px)" }}
+                      style={{ fontSize: `calc(${settings.translationSize}px - 2px)` }} // Context থেকে আসছে
                     >
                       {ayah.en}
                     </p>

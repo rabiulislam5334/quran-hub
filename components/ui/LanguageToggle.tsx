@@ -1,10 +1,15 @@
 "use client";
-import { useLanguage } from "@/hooks/useLanguage";
+
+// ❌ আগের useLanguage ইম্পোর্টটি বাদ দিন
+// import { useLanguage } from "@/hooks/useLanguage"; 
+
+// ✅ আপনার তৈরি করা মূল Context ব্যবহার করুন
+import { useQuran } from "@/context/QuranContext"; 
 
 export default function LanguageToggle() {
-  const { lang, setLang } = useLanguage();
+  // সরাসরি Context থেকে lang এবং setLang নিন
+  const { lang, setLang } = useQuran(); 
 
-  // বাটনগুলোর স্টাইল ম্যানেজ করার ফাংশন
   const btnClass = (current: string) => 
     `relative px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 ease-in-out ${
       lang === current 
@@ -17,7 +22,6 @@ export default function LanguageToggle() {
       <button 
         onClick={() => setLang("en")} 
         className={btnClass("en")}
-        aria-pressed={lang === "en"}
       >
         EN
       </button>
@@ -25,7 +29,6 @@ export default function LanguageToggle() {
       <button 
         onClick={() => setLang("bn")} 
         className={btnClass("bn")}
-        aria-pressed={lang === "bn"}
       >
         BN
       </button>
@@ -33,7 +36,6 @@ export default function LanguageToggle() {
       <button 
         onClick={() => setLang("both")} 
         className={btnClass("both")}
-        aria-pressed={lang === "both"}
       >
         BOTH
       </button>

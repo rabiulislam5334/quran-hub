@@ -1,16 +1,11 @@
 "use client";
-import { useQuranSettings } from "@/hooks/useQuranSettings";
-import { useLanguage } from "@/hooks/useLanguage";
+
+import { useQuran } from "@/context/QuranContext"; // আমাদের মেইন কন্টেক্সট হুক
 import LanguageToggle from "@/components/ui/LanguageToggle";
 
-export default function SettingsPanel({ 
-  searchQuery, 
-  setSearchQuery 
-}: { 
-  searchQuery: string; 
-  setSearchQuery: (val: string) => void 
-}) {
-  const { settings, setSettings } = useQuranSettings();
+export default function SettingsPanel() {
+  // প্রপস হিসেবে searchQuery নেওয়ার দরকার নেই, এটি এখন সরাসরি Context থেকে আসবে
+  const { settings, setSettings, searchQuery, setSearchQuery } = useQuran();
 
   return (
     <div className="space-y-8">
@@ -22,7 +17,7 @@ export default function SettingsPanel({
         <div>
           <label className="block text-[10px] text-zinc-500 mb-2 uppercase tracking-widest font-bold">Arabic Font</label>
           <select 
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-sm outline-none focus:ring-1 focus:ring-emerald-500 transition-all"
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:ring-1 focus:ring-emerald-500 transition-all"
             value={settings.arabicFont}
             onChange={(e) => setSettings({...settings, arabicFont: e.target.value})}
           >
@@ -64,10 +59,11 @@ export default function SettingsPanel({
         <label className="block text-[10px] text-zinc-500 mb-4 uppercase tracking-widest font-bold">
           Translation Language
         </label>
+        {/* LanguageToggle এখন সরাসরি Context থেকে lang চেঞ্জ করবে */}
         <LanguageToggle />
       </div>
 
-      {/* ৩. Search Section (এটি এখন সাইডবারের সেটিংসের নিচেই থাকবে) */}
+      {/* ৩. Search Section */}
       <div className="pt-6 border-t border-zinc-800">
         <label className="block text-[10px] text-zinc-500 mb-3 uppercase tracking-widest font-bold">
           Search Translation
@@ -76,7 +72,7 @@ export default function SettingsPanel({
           <input
             type="text"
             placeholder="Search in English or Bengali..."
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm focus:ring-1 focus:ring-emerald-500 outline-none transition-all placeholder:text-zinc-600"
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:ring-1 focus:ring-emerald-500 outline-none transition-all placeholder:text-zinc-600"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
