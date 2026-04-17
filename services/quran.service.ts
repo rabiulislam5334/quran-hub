@@ -1,60 +1,67 @@
-import { SurahListItem } from "@/types/quran.types";
+// ✅ ১. সব সুরাহ লিস্টের জন্য ফাংশন (এটি HomePage এ লাগবে)
+export async function fetchAllSurahs() {
+  try {
+    const res = await fetch("https://api.alquran.cloud/v1/surah");
+    if (!res.ok) throw new Error("Failed to fetch all surahs");
 
-const BASE_URL = "https://cdn.jsdelivr.net/npm/quran-json@latest/dist";
+    const json = await res.json();
 
-// ১. সব সূরার লিস্ট আনার ফাংশন
-export async function fetchAllSurahs(): Promise<SurahListItem[]> {
-  const res = await fetch(`${BASE_URL}/chapters/index.json`, {
-    next: { revalidate: 3600 },
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch Surahs");
+    return json.data.map((s: any) => ({
+      id: s.number,
+      name: s.name,
+      transliteration: s.englishName,
+      translation: s.englishNameTranslation,
+      total_verses: s.numberOfAyahs,
+    }));
+  } catch (error) {
+    console.error("FetchAllSurahs Error:", error);
+    throw error;
   }
-
-  return res.json();
 }
 
-// ২. নির্দিষ্ট সূরার বিস্তারিত (Ar, En, Bn) আনার ফাংশন
+// ✅ ২. একক সুরাহ এবং আয়াতের জন্য ফাংশন (এটি SurahDetailPage এ লাগবে)
 export async function fetchSurah(number: number) {
   try {
-    // অ্যারাবিক ডাটা ফেচ
-    const arabicRes = await fetch(`${BASE_URL}/chapters/${number}.json`);
-    
-    // ইংরেজি এবং বাংলা অনুবাদ ফেচ (alquran.cloud API থেকে)
-    const [enRes, bnRes] = await Promise.all([
-      fetch(`https://api.alquran.cloud/v1/surah/${number}/en.sahih`),
-      fetch(`https://api.alquran.cloud/v1/surah/${number}/bn.bengali`)
+    const ARABIC = "quran-uthmani";
+    const ENGLISH = "en.sahih";
+    const BENGALI = "bn.bengali";
+
+    const [arRes, enRes, bnRes] = await Promise.all([
+      fetch(`https://api.alquran.cloud/v1/surah/${number}/${ARABIC}`),
+      fetch(`https://api.alquran.cloud/v1/surah/${number}/${ENGLISH}`),
+      fetch(`https://api.alquran.cloud/v1/surah/${number}/${BENGALI}`)
     ]);
 
-    if (!arabicRes.ok || !enRes.ok || !bnRes.ok) {
-      throw new Error("Data not found from one of the sources");
+    if (!arRes.ok || !enRes.ok) throw new Error("Failed to fetch Arabic/English data");
+
+    const arJson = await arRes.json();
+    const enJson = await enRes.json();
+    
+    let bnAyahs: any[] = [];
+    if (bnRes.ok) {
+      const bnJson = await bnRes.json();
+      bnAyahs = bnJson.data.ayahs;
     }
 
-    const arabic = await arabicRes.json();
-    const enJson = await enRes.json();
-    const bnJson = await bnRes.json();
-
+    const arAyahs = arJson.data.ayahs;
     const enAyahs = enJson.data.ayahs;
-    const bnAyahs = bnJson.data.ayahs;
 
-    // ডাটা কম্বাইন করা (ম্যাপিং)
-    const ayahs = arabic.verses.map((v: any, i: number) => ({
-      id: v.id,
-      numberInSurah: v.verse_number,
-      text: v.text,
-      en: enAyahs[i]?.text || "English translation not available",
-      bn: bnAyahs[i]?.text || "বাংলা অনুবাদ পাওয়া যায়নি",
+    const ayahs = arAyahs.map((a: any, i: number) => ({
+      id: a.number,
+      numberInSurah: a.numberInSurah,
+      text: a.text,
+      en: enAyahs[i]?.text || "",
+      bn: bnAyahs[i]?.text || "",
     }));
 
     return {
-      name: arabic.name,
-      englishName: arabic.transliteration,
-      totalAyahs: arabic.total_verses,
+      name: arJson.data.name,
+      englishName: arJson.data.englishName,
+      totalAyahs: arJson.data.numberOfAyahs,
       ayahs,
     };
   } catch (error) {
-    console.error("Error in fetchSurah:", error);
+    console.error("FetchSurah Error:", error);
     throw error;
   }
 }

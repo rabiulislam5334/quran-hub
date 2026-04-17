@@ -1,21 +1,24 @@
 "use client";
+import { useState, useEffect } from "react";
 
-import { useEffect, useState } from "react";
+// টাইপ ডিফাইন করা
+export type LanguageType = "en" | "bn" | "both";
 
 export function useLanguage() {
-  const [lang, setLang] = useState<"en" | "bn">("en");
+  // শুরুতে ডিফল্ট ভ্যালু "both" এবং টাইপ সেট করা
+  const [lang, setLang] = useState<LanguageType>("both");
 
   useEffect(() => {
-    const saved = localStorage.getItem("lang");
-
-    if (saved === "en" || saved === "bn") {
-      setLang(saved);
+    const savedLang = localStorage.getItem("quranLang") as LanguageType;
+    if (savedLang) {
+      setLang(savedLang);
     }
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("lang", lang);
-  }, [lang]);
+  const changeLang = (newLang: LanguageType) => {
+    setLang(newLang);
+    localStorage.setItem("quranLang", newLang);
+  };
 
-  return { lang, setLang };
+  return { lang, setLang: changeLang };
 }
