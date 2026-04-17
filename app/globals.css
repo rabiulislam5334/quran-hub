@@ -16,6 +16,9 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --arabic-font: 'Amiri';
+      --arabic-size: 28px;
+      --trans-size: 18px;
   }
 }
 
@@ -34,4 +37,7 @@ body {
   .translation-text {
     font-size: var(--trans-size, 18px);
   }
+}
+.font-arabic {
+  font-family: var(--arabic-font);
 }
