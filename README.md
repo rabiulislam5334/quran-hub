@@ -127,4 +127,23 @@
 ├── public/               # Static Assets & Icons
 └── styles/               # Global Tailwind Config
 
-<br/>
+🚀 Getting Started
+Installation
+Bash
+# Clone the repository
+git clone [https://github.com/rabiulislam5334/quran-hub.git](https://github.com/rabiulislam5334/quran-hub.git)
+
+# Enter the directory
+cd quran-hub
+
+# Install dependencies
+npm install
+
+# Start development
+npm run dev
+
+
+Built with ❤️ for the Muslim Ummah.
+May this project benefit all seekers of knowledge.
+
+⭐ Star on GitHub
