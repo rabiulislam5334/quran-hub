@@ -27,7 +27,7 @@ export default async function HomePage() {
       <div className="flex justify-between items-center mb-10 pt-10">
         <div>
           <h1 className="text-5xl font-bold text-white tracking-tight">
-            Quran-Hub <span className="text-emerald-500">Digital</span>
+            Quran Hub <span className="text-emerald-500">Digital</span>
           </h1>
           <p className="text-zinc-500 mt-2 font-medium">
             Read, study and search the Holy Quran with clarity

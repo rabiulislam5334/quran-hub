@@ -34,8 +34,13 @@ const scheherazade = Scheherazade_New({
 });
 
 export const metadata: Metadata = {
-  title: "Al-Quran App",
+  title: "Quran App -Read and Listen Holy Quran",
   description: "Read and Listen Holy Quran",
+  icons: {
+    icon: "/quran-logo.png",
+    shortcut: "/quran-logo.png",
+    apple: "/quran-logo.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
