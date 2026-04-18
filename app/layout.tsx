@@ -34,7 +34,7 @@ const scheherazade = Scheherazade_New({
 });
 
 export const metadata: Metadata = {
-  title: "Quran App -Read and Listen Holy Quran",
+  title: "Quran Hub-Read and Listen Holy Quran",
   description: "Read and Listen Holy Quran",
   icons: {
     icon: "/quran-logo.png",
