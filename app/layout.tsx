@@ -36,6 +36,13 @@ const scheherazade = Scheherazade_New({
   weight: ["400", "700"],
   variable: "--font-scheherazade" 
 });
+export const metadata = {
+  title: "Quran Hub - Read with Ease", 
+  description: "Beautiful Quran web app", 
+  icons: {
+    icon: "/quran-logo.png", 
+  },
+};
 
 
 
