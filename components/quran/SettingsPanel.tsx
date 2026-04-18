@@ -1,10 +1,10 @@
 "use client";
 
-import { useQuran } from "@/context/QuranContext"; // আমাদের মেইন কন্টেক্সট হুক
+import { useQuran } from "@/context/QuranContext"; 
 import LanguageToggle from "@/components/ui/LanguageToggle";
 
 export default function SettingsPanel() {
-  // প্রপস হিসেবে searchQuery নেওয়ার দরকার নেই, এটি এখন সরাসরি Context থেকে আসবে
+  // 
   const { settings, setSettings, searchQuery, setSearchQuery } = useQuran();
 
   return (

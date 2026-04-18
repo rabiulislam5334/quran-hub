@@ -34,7 +34,7 @@ export default function SurahClient({ surah, surahNumber }: any) {
         <SettingsPanel />
       </aside>
 
-      {/* 📱 Mobile Overlay - সাইডবার ওপেন থাকলে ব্যাকগ্রাউন্ড ডার্ক হবে */}
+      {/*  Mobile Overlay  */}
       {showSettings && (
         <div 
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[90] md:hidden"
@@ -45,7 +45,7 @@ export default function SurahClient({ surah, surahNumber }: any) {
       {/* 📖 MAIN CONTENT AREA */}
       <main className="flex-1 relative">
         
-        {/* ✅ STICKY HEADER - এটি এখন অবশ্যই উপরে আটকে থাকবে */}
+        {/*  STICKY HEADER  */}
         <div className="sticky top-0 z-50 w-full bg-black/90 backdrop-blur-md border-b border-zinc-800/50 px-4 py-3 md:px-8 md:py-4">
           <div className="max-w-4xl mx-auto flex items-center justify-between">
             <Link 
@@ -136,7 +136,7 @@ export default function SurahClient({ surah, surahNumber }: any) {
         </div>
       </main>
 
-      {/* 🔘 MOBILE FLOATING BUTTON - এটি মোবাইলে সেটিংস খুলবে */}
+      {/*  MOBILE FLOATING BUTTON */}
       <button
         onClick={() => setShowSettings(true)}
         className="fixed bottom-6 left-6 md:hidden z-40 bg-emerald-500 text-black p-4 rounded-full shadow-lg shadow-emerald-500/30 active:scale-90 transition-transform"

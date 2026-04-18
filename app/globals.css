@@ -1,28 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Amiri&family=Lateef&family=Scheherazade+New&display=swap');
 @import "tailwindcss";
 
-
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  /* ডিফল্ট ভেরিয়েবল যা সব মোডে কাজ করবে */
-  --arabic-font: 'Amiri';
+  /* ধূসর কালো (Dark Grayish Black) ব্যাকগ্রাউন্ড */
+  --background: #0a0a0a;
+  --foreground: #ededed;
+
+  --arabic-font: 'Amiri', serif;
   --arabic-size: 28px;
   --trans-size: 18px;
 }
 
+/* ব্রাউজারের ডার্ক মোড সেটিংস অনুযায়ী */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
-
-/* এই ক্লাসটি এখন সব জায়গায় কাজ করবে */
-.font-arabic {
-  font-family: var(--arabic-font);
-  font-size: var(--arabic-size);
 }
 
 @theme inline {
@@ -32,29 +26,37 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --arabic-font: 'Amiri';
-      --arabic-size: 28px;
-      --trans-size: 18px;
-  }
+/* গ্লোবাল বডি স্টাইল */
+body {
+  background-color: var(--background) !important;
+  color: var(--foreground);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
 @layer base {
-  .arabic-text {
-    font-family: var(--arabic-font, 'Amiri'), serif;
-    font-size: var(--arabic-size, 28px);
+  .font-arabic {
+    font-family: var(--arabic-font);
+    font-size: var(--arabic-size);
     direction: rtl;
   }
 
-  .translation-text {
-    font-size: var(--trans-size, 18px);
+  .arabic-text {
+    font-family: var(--arabic-font);
+    font-size: var(--arabic-size);
+    direction: rtl;
+    line-height: 2;
+    /* আরবি পড়ার জন্য আরও একটু গ্যাপ */
   }
+
+  .translation-text {
+    font-size: var(--trans-size);
+  }
+}
+
+/* পুরো HTML ডকুমেন্টকে ডার্ক মোডে সেট করা */
+html {
+  background-color: #0a0a0a;
+  color-scheme: dark;
 }

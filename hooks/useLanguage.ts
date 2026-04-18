@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 export type LanguageType = "en" | "bn" | "both";
 
 export function useLanguage() {
-  // শুরুতে ডিফল্ট ভ্যালু "both" এবং টাইপ সেট করা
+ 
   const [lang, setLang] = useState<LanguageType>("both");
 
   useEffect(() => {

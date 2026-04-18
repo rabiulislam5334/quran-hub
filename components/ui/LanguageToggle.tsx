@@ -1,13 +1,13 @@
 "use client";
 
-// ❌ আগের useLanguage ইম্পোর্টটি বাদ দিন
+
 // import { useLanguage } from "@/hooks/useLanguage"; 
 
-// ✅ আপনার তৈরি করা মূল Context ব্যবহার করুন
+
 import { useQuran } from "@/context/QuranContext"; 
 
 export default function LanguageToggle() {
-  // সরাসরি Context থেকে lang এবং setLang নিন
+
   const { lang, setLang } = useQuran(); 
 
   const btnClass = (current: string) => 
